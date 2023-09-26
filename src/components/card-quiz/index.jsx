@@ -44,26 +44,41 @@ export const CardQuiz = ({
 		<>
 			<div className='card-quiz__question'>{currentQuestion?.question}</div>
 			{currentQuestion?.options.map((e, index) => {
-				const labelClass = userAnswer.includes(index)
-					? 'card-quiz__option__label--selected'
-					: ''
+				let labelClass = ''
+				if (userAnswer?.answers?.length > 0) {
+					labelClass = userAnswer.answers?.includes(e)
+						? 'card-quiz__option__label--selected'
+						: ''
+				}
 				let backgroundOption = ''
-				if (answers) {
-					if (answers[current].value.includes(index)) {
-						backgroundOption = 'card-quiz__option--correct'
-						if (userAnswer.includes(index)) {
-							backgroundOption += ' card-quiz__option--correct--user'
+				if (answers.length > 0) {
+					const answer = answers[current].correct_answers
+					const selectedAnswers = userAnswer?.answers || []
+
+					if (index < 25) {
+						backgroundOption = answer?.includes(e)
+							? 'card-quiz__option--correct card-quiz__option--correct--user'
+							: ''
+						if (selectedAnswers.includes(e) && !answer?.includes(e)) {
+							backgroundOption = 'card-quiz__option--incorrect'
 						}
-					} else if (userAnswer.includes(index)) {
-						backgroundOption = 'card-quiz__option--incorrect'
+					} else if (index >= 25 && index < 35) {
+						if (answer.includes(e)) {
+							backgroundOption = 'card-quiz__option--correct'
+							if (selectedAnswers.includes(e)) {
+								backgroundOption += ' card-quiz__option--correct--user'
+							}
+						} else {
+							backgroundOption = 'card-quiz__option--incorrect'
+						}
 					}
 				}
 				return (
 					<div
 						className={`card-quiz__option__anchor ${backgroundOption}`}
 						onClick={() => {
-							if (!answers) {
-								selectOption(current, index)
+							if (answers.length === 0) {
+								selectOption(current, e)
 							}
 						}}
 						key={index}
@@ -77,6 +92,7 @@ export const CardQuiz = ({
 			})}
 		</>
 	)
+
 	if (isDivided) {
 		return (
 			<div className='card-quiz__root card-quiz__root--flex'>

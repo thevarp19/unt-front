@@ -1,20 +1,21 @@
 .result-topic__root {
-    margin: 1rem;
-    font-size: 2.1rem;
-    width: 100%;
+	margin: 1rem;
+	font-size: 2.1rem;
+	width: 100%;
 }
 
 .result-topic__anchor {
-    display: flex;
-    padding: 1rem;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 1rem;
 }
 
 .result-topic__block {
-    background-color: #E2E5E9;
-    border-radius: 0.45em;
-    padding: 0.4em 0.75em;
-    color: black;
-    width: max-content;
-    font-size: 2rem;
-    margin: 0.25em;
-} 
+	background-color: #e2e5e9;
+	border-radius: 0.45em;
+	padding: 0.4em 0.75em;
+	color: black;
+	width: max-content;
+	font-size: 2rem;
+	margin: 0.25em;
+}

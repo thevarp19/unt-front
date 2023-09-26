@@ -5,11 +5,12 @@ import { LazyImage } from '../../../components/lazy-image'
 import { Navigator } from '../../../components/navigator'
 import { PageSkeleton } from '../../../components/page-skeleton'
 import { next, previous } from '../../../media'
-import { fetchQuestions, quizActions } from '../../../store/quiz'
+import { checkAnswers, fetchQuestions, quizActions } from '../../../store/quiz'
 import './universal-testing.css'
 export const UniversalTesting = () => {
 	const quiz = useSelector(state => state.quiz)
 	const current = quiz.current
+	const answers = quiz.answers
 	const userAnswers = quiz.userAnswers
 	const dispatch = useDispatch()
 	const toQuestion = index => {
@@ -21,11 +22,14 @@ export const UniversalTesting = () => {
 	const countDown = () => {
 		dispatch(quizActions.countDown())
 	}
-
-	const answers = quiz.answers
+	const handleSubmitQuiz = () => {
+		dispatch(checkAnswers())
+	}
 
 	useEffect(() => {
-		dispatch(fetchQuestions())
+		if (answers.length === 0) {
+			dispatch(fetchQuestions())
+		}
 	}, [])
 
 	return (
@@ -34,6 +38,7 @@ export const UniversalTesting = () => {
 				header='working'
 				timeLeft={quiz.timeLeft}
 				countDown={countDown}
+				onClick={handleSubmitQuiz}
 				footer
 			>
 				<div className='testing__root'>
@@ -52,6 +57,7 @@ export const UniversalTesting = () => {
 							userAnswer={userAnswers[current]}
 							current={current}
 							selectOption={selectOption}
+							answers={answers}
 						/>
 					</div>
 					<LazyImage
@@ -67,9 +73,10 @@ export const UniversalTesting = () => {
 					/>
 				</div>
 				<Navigator
-					userAnswers={quiz.userAnswers}
+					userAnswers={userAnswers}
 					current={current}
 					toQuestion={toQuestion}
+					answers={answers}
 				/>
 			</PageSkeleton>
 		</div>
