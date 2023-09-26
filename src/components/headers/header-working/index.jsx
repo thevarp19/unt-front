@@ -150,7 +150,11 @@ export const HeaderWorking = ({ timeLeft, countDown, onClick }) => {
 								/>
 							</div>
 							<hr />
-							<div className='header__button'>{language.quizHeader.finish}</div>
+							<Link to='/home/results'>
+								<div onClick={onClick} className='header__button'>
+									{language.quizHeader.finish}
+								</div>
+							</Link>
 						</div>
 					) : (
 						<></>
