@@ -11,6 +11,8 @@ export const HeaderWorking = ({ timeLeft, countDown, onClick }) => {
 	const language = useSelector(state => {
 		return state.language.value
 	})
+	const answers = useSelector(state => state.quiz.answers)
+
 	let time = {
 		hours: Math.floor(timeLeft / (1000 * 60 * 60)),
 		minutes: Math.floor((timeLeft / 1000 / 60) % 60),
@@ -20,9 +22,11 @@ export const HeaderWorking = ({ timeLeft, countDown, onClick }) => {
 	const [musicActive, setMusicActive] = useState(false)
 	const [workingDrop, setWorkingDrop] = useState(false)
 	useEffect(() => {
-		setTimeout(() => {
-			countDown()
-		}, 1000)
+		if (answers.length === 0) {
+			setTimeout(() => {
+				countDown()
+			}, 1000)
+		}
 	}, [timeLeft])
 
 	const changePosition = event => {
@@ -62,19 +66,23 @@ export const HeaderWorking = ({ timeLeft, countDown, onClick }) => {
 		<Header
 			right={
 				<div className='header-working__anchor'>
-					<div className='header__button header-working__time'>
-						{time.hours < 10 ? `0${time.hours}` : time.hours}:
-						{time.minutes < 10 ? `0${time.minutes}` : time.minutes}:
-						{time.seconds < 10 ? `0${time.seconds}` : time.seconds}
-					</div>
-					<Link to='/home/results'>
-						<div
-							className='header__button header__button--pink header__to-hide'
-							onClick={onClick}
-						>
-							{language.quizHeader.finish}
-						</div>
-					</Link>
+					{answers.length === 0 && (
+						<>
+							<div className='header__button header-working__time'>
+								{time.hours < 10 ? `0${time.hours}` : time.hours}:
+								{time.minutes < 10 ? `0${time.minutes}` : time.minutes}:
+								{time.seconds < 10 ? `0${time.seconds}` : time.seconds}
+							</div>
+							<Link to='/home/results'>
+								<div
+									className='header__button header__button--pink header__to-hide'
+									onClick={onClick}
+								>
+									{language.quizHeader.finish}
+								</div>
+							</Link>
+						</>
+					)}
 					<div>
 						<LazyImage
 							className='button--hovered header-working__image header__to-hide'
